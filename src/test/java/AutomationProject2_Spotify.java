@@ -35,7 +35,7 @@ public class AutomationProject2_Spotify {
 
         driver.findElement(By.xpath("//input[@data-testid='search-input']")).sendKeys("Adele Hello", Keys.ENTER);
 
-        Thread.sleep(5000);
+        Thread.sleep(3000);
 
         driver.findElement (By.linkText("Hello")).click();
 
