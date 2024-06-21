@@ -215,12 +215,26 @@ public class AutomationProject3_EdmundsCarSearch {
 
 // 17. Go back to the results page and verify that the clicked result has “Viewed” element on it.
 
-         driver.navigate().back();
-        System.out.println(elements.get(elements.size() - 1).getText().contains("Viewed"));
+        driver.navigate().back();
+        Thread.sleep(2000);
+
+        if (elements.get(elements.size() - 1).getText().contains("Viewed")){
+            System.out.println("Last element contains: \"Viewed\" ");
+        } else {
+            System.out.println("Last element does not contain: \"Viewed\" ");
+        }
+
+        driver.getPageSource();
+
+        if (driver.getPageSource().contains("Viewed")){
+            System.out.println("The webpage contains: \"Viewed\" ");
+        } else {
+            System.out.println("The webpage does not contain: \"Viewed\" ");
+        }
 
 
          Thread.sleep(3000);
-         driver.quit();
+        // driver.quit();
 
 
      }
