@@ -216,15 +216,15 @@ public class AutomationProject3_EdmundsCarSearch {
 
 // 17. Go back to the results page and verify that the clicked result has “Viewed” element on it.
 
-        Thread.sleep(5000);
+        Thread.sleep(3000);
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 134)");
-        Thread.sleep(5000);
+        Thread.sleep(3000);
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 345)");
-        Thread.sleep(5000);
+        Thread.sleep(3000);
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 234)");
 
         driver.navigate().back();
-        Thread.sleep(10000);
+        Thread.sleep(5000);
         elements = driver.findElements(By.xpath("//li[@class='d-flex mb-0_75 mb-md-1_5 col-12 col-md-6']"));
 
         System.out.println(elements.get(elements.size()-1).getText());
