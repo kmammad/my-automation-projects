@@ -12,10 +12,11 @@ import java.util.List;
 
 public class AutomationProject4_Airbnb {
 
+    // hello Akmal and Yana NOW In the right place
+
     @Test
     public void testCase() throws InterruptedException {
 
-        // hello Akmal and Yana
 
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
