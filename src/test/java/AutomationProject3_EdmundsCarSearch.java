@@ -42,7 +42,6 @@ public class AutomationProject3_EdmundsCarSearch {
 
          if (!checkbox.isSelected()) {
              checkbox.click();
-             ;
          }
          Thread.sleep(1000);
 
@@ -215,14 +214,25 @@ public class AutomationProject3_EdmundsCarSearch {
 
 // 17. Go back to the results page and verify that the clicked result has “Viewed” element on it.
 
-        driver.navigate().back();
         Thread.sleep(2000);
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500)");
+        Thread.sleep(2000);
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, -500)");
+        Thread.sleep((2000));
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 430)");
+        driver.navigate().back();
+        Thread.sleep(10000);
 
-        if (elements.get(elements.size() - 1).getText().contains("Viewed")){
+        List<WebElement> carPictures = driver.findElements(By.xpath("//div[@class='slick-list']"));
+
+        System.out.println(carPictures.get(carPictures.size()-1).getText());
+       if (carPictures.get(carPictures.size()-1).getText().contains("Viewed")){
             System.out.println("Last element contains: \"Viewed\" ");
         } else {
             System.out.println("Last element does not contain: \"Viewed\" ");
         }
+
+
 
         driver.getPageSource();
 
@@ -232,8 +242,9 @@ public class AutomationProject3_EdmundsCarSearch {
             System.out.println("The webpage does not contain: \"Viewed\" ");
         }
 
+        // elements = driver.findElements(By.xpath("//div[@class='vehicle-info d-flex flex-column pos-r p-1']"));
 
-         Thread.sleep(3000);
+        Thread.sleep(3000);
          driver.quit();
 
 

@@ -32,9 +32,15 @@ public class AutomationProject4_Airbnb {
         driver.findElement(By.linkText("Log in")).click();
 
 //  Enter valid credentials (email and password) and log in
-       driver.findElement(By.xpath("//div[.='Continue with email']")).click();
-       driver.findElement(By.xpath("user[email]")).sendKeys("jglob13@gmail.com", Keys.ENTER);
-       driver.findElement(By.name("user[password]")).sendKeys("Rental132020", Keys.ENTER);
+        driver.findElement(By.xpath("//div[.='Continue with email']")).click();
+driver.findElement(By.xpath("//input[@data-testid='email-login-email']")).sendKeys("jglob13@gmail.com", Keys.ENTER);
+        driver.findElement(By.name("user[password]")).sendKeys("Rental132020", Keys.ENTER);
+
+        Thread.sleep(1000);
+driver.findElement(By.xpath("//button[@type='button']//span[@class='i3tjjh1 atm_mk_h2mmj6 dir dir-ltr']")).click();
+
+//       driver.findElement(By.xpath("user[email]")).sendKeys("jglob13@gmail.com", Keys.ENTER);
+//       driver.findElement(By.name("user[password]")).sendKeys("Rental132020", Keys.ENTER);
 
 //  Validate that the user's profile button with initial appears at the top right.
        Assert.assertTrue(driver.findElement(By.xpath("//button[@data-testid='cypress-headernav-profile']//img[@class]"))
@@ -81,11 +87,11 @@ public class AutomationProject4_Airbnb {
        priceMin.sendKeys(Keys.chord(Keys.COMMAND, "A"), Keys.BACK_SPACE);
        priceMin.sendKeys("100");
 
-        WebElement priceMax = driver.findElement(By.id("price_filter_max"));
-        priceMax.sendKeys(Keys.chord(Keys.COMMAND, "A"), Keys.BACK_SPACE);
-        priceMax.sendKeys("600");
-
-        driver.findElement(By.xpath("//div[@class='ptiimno atm_7l_1p8m8iw dir dir-ltr']//a[@href]")).click();
+//        WebElement priceMax = driver.findElement(By.id("price_filter_max"));
+//        priceMax.sendKeys(Keys.chord(Keys.COMMAND, "A"), Keys.BACK_SPACE);
+//        priceMax.sendKeys("600");
+//
+//        driver.findElement(By.xpath("//div[@class='ptiimno atm_7l_1p8m8iw dir dir-ltr']//a[@href]")).click();
 
 //  Extract all the prices from the search results and verify that each of them is within the range
 
