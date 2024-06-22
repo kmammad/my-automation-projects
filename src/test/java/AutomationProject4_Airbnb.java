@@ -15,6 +15,8 @@ public class AutomationProject4_Airbnb {
     @Test
     public void testCase() throws InterruptedException {
 
+        // hello Akmal and Yana
+
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
