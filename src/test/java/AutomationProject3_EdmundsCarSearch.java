@@ -40,9 +40,11 @@ public class AutomationProject3_EdmundsCarSearch {
 // 4. Check the checkbox -> only show local listings
          WebElement checkbox = driver.findElement(By.xpath("//label[@data-tracking-value='deliveryType~local~Only show local listings']//span[@class='checkbox checkbox-icon size-18 icon-checkbox-unchecked3 text-gray-form-controls']"));
 
-         if (!checkbox.isSelected()) {
-             checkbox.click();
-         }
+//         if (!checkbox.isSelected()) {
+//             checkbox.click();
+//             ;
+//         }
+        ((JavascriptExecutor)driver).executeScript("arguments[0].click();", checkbox);
          Thread.sleep(1000);
 
 // 5. Choose Tesla for a make
@@ -215,24 +217,15 @@ public class AutomationProject3_EdmundsCarSearch {
 // 17. Go back to the results page and verify that the clicked result has “Viewed” element on it.
 
         Thread.sleep(2000);
-        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500)");
-        Thread.sleep(2000);
-        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, -500)");
-        Thread.sleep((2000));
-        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 430)");
         driver.navigate().back();
-        Thread.sleep(10000);
+        Thread.sleep(2000);
+        elements = driver.findElements(By.xpath("//div[@class='vehicle-info d-flex flex-column pos-r p-1']"));
 
-        List<WebElement> carPictures = driver.findElements(By.xpath("//div[@class='slick-list']"));
-
-        System.out.println(carPictures.get(carPictures.size()-1).getText());
-       if (carPictures.get(carPictures.size()-1).getText().contains("Viewed")){
+        if (elements.get(elements.size() - 1).getText().contains("Viewed")){
             System.out.println("Last element contains: \"Viewed\" ");
         } else {
             System.out.println("Last element does not contain: \"Viewed\" ");
         }
-
-
 
         driver.getPageSource();
 
@@ -242,9 +235,8 @@ public class AutomationProject3_EdmundsCarSearch {
             System.out.println("The webpage does not contain: \"Viewed\" ");
         }
 
-        // elements = driver.findElements(By.xpath("//div[@class='vehicle-info d-flex flex-column pos-r p-1']"));
 
-        Thread.sleep(3000);
+         Thread.sleep(3000);
          driver.quit();
 
 
