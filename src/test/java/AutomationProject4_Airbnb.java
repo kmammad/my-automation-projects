@@ -228,7 +228,7 @@ System.out.println("Rating Actual: " + ratingFirstActual);
             Thread.sleep(1000);
             Assert.assertTrue(driver.findElement(By.linkText("Log in")).isDisplayed());
 
-            Thread.sleep(2000);
+            Thread.sleep(1000);
             driver.quit();
 
         }
