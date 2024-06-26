@@ -1,0 +1,24 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Duotify Test Suite">
+
+    <test name="UI Smoke Tests">
+
+        <classes>
+
+            <class name="testng_practice.TestngProject1_Duotify">
+                <methods>
+                    <include name="testSignUpAndLogin"/>
+                    <include name="testValidLogin"/>
+                </methods>
+
+            </class>
+
+
+
+
+        </classes>
+
+    </test>
+
+</suite>
