@@ -1,9 +1,10 @@
+package selenium_projects;
+
 import com.github.javafaker.Faker;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import java.util.*;
 
 public class AutomationProject1_SignUpAndLogIn {
 
