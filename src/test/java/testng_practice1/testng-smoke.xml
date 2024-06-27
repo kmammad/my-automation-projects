@@ -6,10 +6,11 @@
 
         <classes>
 
-            <class name="testng_practice.TestngProject1_Duotify">
+            <class name="testng_practice1.AP1_Duotify">
                 <methods>
                     <include name="testSignUpAndLogin"/>
                     <include name="testValidLogin"/>
+                    <include name="testInvalidLogin"/>
                 </methods>
 
             </class>

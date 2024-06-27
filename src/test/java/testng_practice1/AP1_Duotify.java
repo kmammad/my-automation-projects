@@ -1,4 +1,4 @@
-package testng_practice;
+package testng_practice1;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -9,22 +9,23 @@ import org.testng.annotations.*;
 
 import java.time.Duration;
 
-public class TestngProject1_Duotify {
+public class AP1_Duotify {
+
 
     WebDriver driver;
 
     @BeforeTest (alwaysRun = true)
     public void beforeTest(){
-        TestngUtils.writeSignUpDataToFile("src/test/java/testng_practice/signUpData.csv",
-                "src/test/java/testng_practice/validLogin.csv", 5);
-        TestngUtils.writeInvalidLoginDataToFile("src/test/java/testng_practice/invalidLogin.csv", 5);
+        Practice1Utils.writeSignUpDataToFile("src/test/java/testng_practice1/signUpData.csv",
+                "src/test/java/testng_practice1/validLogin.csv", 1);
+        Practice1Utils.writeInvalidLoginDataToFile("src/test/java/testng_practice1/invalidLogin.csv", 1);
     }
 
     @BeforeMethod
     public void setUp(){
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
     }
 
     @AfterMethod
@@ -32,7 +33,7 @@ public class TestngProject1_Duotify {
         driver.quit();
     }
 
-    @Test (priority = 1, dataProvider = "getSignUpData")
+    @Test (priority = 0, dataProvider = "getSignUpData")
     public void testSignUpAndLogin(String userName, String firstName, String lastName, String email, String password) throws InterruptedException {
 
         driver.get("http://duotify.us-east-2.elasticbeanstalk.com/register.php");
@@ -73,8 +74,7 @@ public class TestngProject1_Duotify {
         Assert.assertEquals(driver.getCurrentUrl(), expectedUrl1);
     }
 
-
-        @Test (priority = 2, dataProvider = "getValidLoginData")
+        @Test (priority = 0, dataProvider = "getValidLoginData")
         public void testValidLogin (String username, String password) throws InterruptedException {
 
             driver.get("http://duotify.us-east-2.elasticbeanstalk.com/register.php");
@@ -101,15 +101,35 @@ public class TestngProject1_Duotify {
             Assert.assertEquals(driver.getCurrentUrl(), expectedUrl2);
         }
 
+        @Test (priority = 0, dataProvider = "getInvalidLoginData")
+        public void testInvalidLogin (String username, String password) throws InterruptedException {
+
+            driver.get("http://duotify.us-east-2.elasticbeanstalk.com/register.php");
+            Thread.sleep(1000);
+
+            driver.findElement(By.id("loginUsername")).sendKeys(username);
+            driver.findElement(By.id("loginPassword")).sendKeys(password);
+            driver.findElement(By.name("loginButton")).click();
+
+            Thread.sleep(1000);
+
+            String expectedText = "You Might Also Like";
+            System.out.println(driver.getPageSource());
+            Assert.assertFalse(driver.getPageSource().contains(expectedText));
+        }
 
         @DataProvider
         public Object[][] getSignUpData () {
-            return TestngUtils.readData("src/test/java/testng_practice/signUpData.csv");
+            return Practice1Utils.readData("src/test/java/testng_practice1/signUpData.csv");
         }
 
-    @DataProvider
-    public Object[][] getValidLoginData () {
-        return TestngUtils.readData("src/test/java/testng_practice/validLogin.csv");
-    }
+        @DataProvider
+        public Object[][] getValidLoginData () {
+           return Practice1Utils.readData("src/test/java/testng_practice1/validLogin.csv");
+        }
 
+        @DataProvider
+        public Object[][] getInvalidLoginData () {
+           return Practice1Utils.readData("src/test/java/testng_practice1/invalidLogin.csv");
+         }
     }

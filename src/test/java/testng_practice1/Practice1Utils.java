@@ -1,4 +1,4 @@
-package testng_practice;
+package testng_practice1;
 
 import com.github.javafaker.Faker;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TestngUtils {
+public class Practice1Utils {
 
     public static Object [][] readData(String path){
         List<String> allLines = null;
@@ -55,6 +55,7 @@ public class TestngUtils {
                 bw.write(password.get(i));
                 bw.newLine();
             }
+            bw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,6 +66,7 @@ public class TestngUtils {
                 bw.write(password.get(i));
                 bw.newLine();
             }
+            bw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,6 +82,7 @@ public class TestngUtils {
                     bw.write(faker.internet().password());
                     bw.newLine();
                 }
+                bw.close();
             } catch (IOException e){
                 e.printStackTrace();
             }
