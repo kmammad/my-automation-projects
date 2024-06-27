@@ -1,0 +1,21 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Spotify Test Suite">
+
+    <test name="UI Smoke Tests">
+
+        <classes>
+
+            <class name="testng_practice2.AP2_Spotify">
+                <methods>
+                    <exclude name="testSignUpAndLogin"/>
+                    <exclude name="testValidLogin"/>
+                    <include name="testInvalidLogin"/>
+                </methods>
+            </class>
+
+        </classes>
+
+    </test>
+
+</suite>

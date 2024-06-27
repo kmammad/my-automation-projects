@@ -5,8 +5,10 @@ import com.github.javafaker.Faker;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Practice2Utils {
 
@@ -22,13 +24,22 @@ public class Practice2Utils {
                 Faker faker = new Faker();
 
                 email.add(faker.internet().emailAddress());
-                password.add(faker.internet().password());
+                password.add(faker.internet().
+                        password(10, 20, true, false, true));
+
+                Random random = new Random();
+                int monthIndex = random.nextInt(12); // 0 to 11 for Jan to Dec
+                Month randomMonth = Month.of(monthIndex + 1);
+                String month = randomMonth.toString().toLowerCase().substring(0,1).toUpperCase()
+                        + randomMonth.toString().toLowerCase().substring(1);
 
                 bw.write(email.get(i));
                 bw.write(",");
                 bw.write(password.get(i));
                 bw.write(",");
                 bw.write(faker.name().fullName());
+                bw.write(",");
+                bw.write(month);
                 bw.write(",");
                 bw.write(String.valueOf(faker.number().numberBetween(1, 27)));
                 bw.write(",");
@@ -48,6 +59,21 @@ public class Practice2Utils {
             }
             bw.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeInvalidLoginDataToFile(String fileName, int quantity){
+        try ( BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
+            for (int i = 0; i < quantity; i++) {
+                Faker faker = new Faker();
+                bw.write(faker.internet().emailAddress());
+                bw.write(",");
+                bw.write(faker.internet().password());
+                bw.newLine();
+            }
+            bw.close();
+        } catch (IOException e){
             e.printStackTrace();
         }
     }

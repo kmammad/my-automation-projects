@@ -6,7 +6,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import testng_practice1.Practice1Utils;
@@ -39,14 +42,14 @@ public class AP2_Spotify {
 
         Practice2Utils.writeSignUpDataToFile("src/test/java/testng_practice2/signUpData.csv",
                 "src/test/java/testng_practice2/validLogin.csv", 1);
-       // Practice2Utils.writeInvalidLoginDataToFile("src/test/java/testng_practice/invalidLogin.csv", 1);
+        Practice2Utils.writeInvalidLoginDataToFile("src/test/java/testng_practice2/invalidLogin.csv", 3);
     }
 
     @AfterTest
     public void deleteFile() {
-//        signUpFile.delete();
-//        validLoginFile.delete();
-//        invalidLoginFile.delete();
+        signUpFile.delete();
+        validLoginFile.delete();
+        invalidLoginFile.delete();
     }
 
     @BeforeMethod
@@ -54,6 +57,8 @@ public class AP2_Spotify {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
+        driver.get("https://open.spotify.com/");
     }
 
     @AfterMethod
@@ -61,50 +66,63 @@ public class AP2_Spotify {
         driver.quit();
     }
 
-    @Test(priority = 0, dataProvider = "getSignUpData")
+    @Test(priority = 1, dataProvider = "getSignUpData")
     public void testSignUpAndLogin(String email, String password, String fullName, String month, String day, String year) throws InterruptedException {
 
-        driver.get("https://open.spotify.com/");
-        Thread.sleep(1000);
-
         driver.findElement(By.xpath("//button[@data-testid='signup-button']")).click();
+
+        driver.findElement(By.cssSelector("input#username")).sendKeys(email);
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//button[@data-testid='submit']")).click();
         Thread.sleep(1000);
 
-        driver.findElement(By.cssSelector("input#username")).sendKeys(email, Keys.ENTER);
+        driver.findElement(By.cssSelector("input#new-password")).sendKeys(password);
         Thread.sleep(1000);
-
-        driver.findElement(By.cssSelector("input#new-password")).sendKeys(password, Keys.ENTER);
-        Thread.sleep(1000);
+        driver.findElement(By.xpath("//button[@data-testid='submit']")).click();
+        Thread.sleep(2000);
 
         driver.findElement(By.cssSelector("input#displayName")).sendKeys(fullName);
         Thread.sleep(1000);
 
         Select monthDropdown = new Select(driver.findElement(By.id("month")));
         monthDropdown.selectByVisibleText(month);
-        Thread.sleep(1000);
 
         driver.findElement(By.id("day")).sendKeys(day, Keys.TAB, year);
-        Thread.sleep(1000);
 
-        List<WebElement> radioList = driver.findElements(By.cssSelector("input[type='radio']"));
+        List<WebElement> radioList = driver.findElements(By.cssSelector("div[class='Radio-sc-tr5kfi-0 hLLKvs']"));
 
         for (WebElement button : radioList) {
-            Random rand = new Random();
+             Random rand = new Random();
             radioList.get(rand.nextInt( radioList.size())).click();
         }
-        Thread.sleep(1000);
 
         driver.findElement(By.xpath("//button[@data-testid='submit']")).click();
         Thread.sleep(1000);
 
-        driver.findElement(By.xpath("//input[@id='checkbox-privacy']")).click();
-        Thread.sleep(1000);
+        driver.findElement(By.cssSelector("label[class='Label-sc-cpoq-0 havZVP']")).click();
 
-        driver.findElement(By.xpath("//input[@id='checkbox-privacy']")).sendKeys(Keys.ENTER);
+        driver.findElement(By.xpath("//span[.='Sign up']")).click();
         Thread.sleep(1000);
 
         driver.findElement(By.xpath("//span[@data-testid='username-first-letter']")).click();
-        Thread.sleep(2000);
+
+        Assert.assertTrue(driver.getPageSource().contains("Log out"));
+
+        driver.findElement(By.xpath("//button[@data-testid='user-widget-dropdown-logout']")).click();
+
+        Assert.assertTrue(driver.getPageSource().contains("Log in"));
+    }
+
+    @Test(priority = 2, dataProvider = "getValidLogin")
+    public void testValidLogin(String email, String password) throws InterruptedException {
+
+        driver.findElement(By.cssSelector("button[data-testid='login-button']")).click();
+        Thread.sleep(1000);
+
+        driver.findElement(By.id("login-username")).sendKeys(email, Keys.TAB, password, Keys.ENTER);
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath("//span[@data-testid='username-first-letter']")).click();
 
         Assert.assertTrue(driver.getPageSource().contains("Log out"));
 
@@ -114,10 +132,33 @@ public class AP2_Spotify {
         Assert.assertTrue(driver.getPageSource().contains("Log in"));
     }
 
-    @DataProvider
-    public static Object[][] getSignUpData() {
+    @Test(priority = 3, dataProvider = "getInvalidLogin")
+    public void testInvalidLogin(String email, String password) throws InterruptedException {
 
-        return Practice1Utils.readData("src/test/java/testng_practice2/signUpData.csv");
+        driver.findElement(By.cssSelector("button[data-testid='login-button']")).click();
+        Thread.sleep(1000);
+
+        driver.findElement(By.id("login-username")).sendKeys(email, Keys.TAB, password, Keys.ENTER);
+        Thread.sleep(2000);
+
+        Assert.assertTrue(driver.getPageSource().contains("Incorrect username or password."));
+
+        Assert.assertTrue(driver.getPageSource().contains("Log in to Spotify"));
     }
 
+
+        @DataProvider
+    public static Object[][] getSignUpData() {
+        return readData("src/test/java/testng_practice2/signUpData.csv");
+    }
+
+    @DataProvider
+    public static Object[][] getValidLogin() {
+        return readData("src/test/java/testng_practice2/validLogin.csv");
+    }
+
+    @DataProvider
+    public static Object[][] getInvalidLogin() {
+        return readData("src/test/java/testng_practice2/invalidLogin.csv");
+    }
 }
