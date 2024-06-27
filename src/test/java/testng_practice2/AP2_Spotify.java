@@ -39,10 +39,9 @@ public class AP2_Spotify {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         Practice2Utils.writeSignUpDataToFile("src/test/java/testng_practice2/signUpData.csv",
                 "src/test/java/testng_practice2/validLogin.csv", 1);
-        Practice2Utils.writeInvalidLoginDataToFile("src/test/java/testng_practice2/invalidLogin.csv", 3);
+        Practice2Utils.writeInvalidLoginDataToFile("src/test/java/testng_practice2/invalidLogin.csv", 1);
     }
 
     @AfterTest
@@ -57,7 +56,6 @@ public class AP2_Spotify {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-
         driver.get("https://open.spotify.com/");
     }
 
@@ -70,17 +68,14 @@ public class AP2_Spotify {
     public void testSignUpAndLogin(String email, String password, String fullName, String month, String day, String year) throws InterruptedException {
 
         driver.findElement(By.xpath("//button[@data-testid='signup-button']")).click();
-
         driver.findElement(By.cssSelector("input#username")).sendKeys(email);
         Thread.sleep(1000);
         driver.findElement(By.xpath("//button[@data-testid='submit']")).click();
         Thread.sleep(1000);
-
         driver.findElement(By.cssSelector("input#new-password")).sendKeys(password);
         Thread.sleep(1000);
         driver.findElement(By.xpath("//button[@data-testid='submit']")).click();
         Thread.sleep(2000);
-
         driver.findElement(By.cssSelector("input#displayName")).sendKeys(fullName);
         Thread.sleep(1000);
 
@@ -90,17 +85,14 @@ public class AP2_Spotify {
         driver.findElement(By.id("day")).sendKeys(day, Keys.TAB, year);
 
         List<WebElement> radioList = driver.findElements(By.cssSelector("div[class='Radio-sc-tr5kfi-0 hLLKvs']"));
-
         for (WebElement button : radioList) {
              Random rand = new Random();
             radioList.get(rand.nextInt( radioList.size())).click();
         }
-
         driver.findElement(By.xpath("//button[@data-testid='submit']")).click();
         Thread.sleep(1000);
 
         driver.findElement(By.cssSelector("label[class='Label-sc-cpoq-0 havZVP']")).click();
-
         driver.findElement(By.xpath("//span[.='Sign up']")).click();
         Thread.sleep(1000);
 
@@ -145,6 +137,38 @@ public class AP2_Spotify {
 
         Assert.assertTrue(driver.getPageSource().contains("Log in to Spotify"));
     }
+
+    @Test(priority = 4, dataProvider = "getValidLogin")
+    public void testSearchMusic(String email, String password) throws InterruptedException {
+
+        driver.findElement(By.cssSelector("button[data-testid='login-button']")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.id("login-username")).sendKeys(email, Keys.TAB, password, Keys.ENTER);
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//span[@data-testid='username-first-letter']")).click();
+        Assert.assertTrue(driver.getPageSource().contains("Log out"));
+        driver.findElement(By.xpath("//button[@data-testid='user-widget-dropdown-logout']")).click();
+        Thread.sleep(1000);
+        Assert.assertTrue(driver.getPageSource().contains("Log in"));
+
+        driver.findElement(By.linkText("Search")).click();
+        Thread.sleep(1000);
+        Assert.assertTrue(driver.getPageSource().contains("What do you want to play?"));
+        driver.findElement(By.xpath("//input[@data-testid='search-input']")).sendKeys("Adele Hello", Keys.ENTER);
+        Thread.sleep(3000);
+        driver.findElement (By.linkText("Hello")).click();
+        Thread.sleep(3000);
+        driver.findElement(By.xpath("//button[@data-testid='control-button-playpause']")).click();
+        Thread.sleep(5000);
+        driver.findElement(By.xpath("//button[@data-testid='control-button-playpause']")).click();
+        String actualSongName = driver.findElement(By.linkText("Hello")).getText();
+        Thread.sleep(1000);
+        Assert.assertEquals(actualSongName, "Hello");
+        String actualArtistName = driver.findElement(By.linkText("Adele")).getText();
+        Thread.sleep(1000);
+        Assert.assertEquals(actualArtistName, "Adele");
+    }
+
 
 
         @DataProvider

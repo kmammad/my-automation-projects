@@ -8,9 +8,10 @@
 
             <class name="testng_practice2.AP2_Spotify">
                 <methods>
-                    <exclude name="testSignUpAndLogin"/>
-                    <exclude name="testValidLogin"/>
+                    <include name="testSignUpAndLogin"/>
+                    <include name="testValidLogin"/>
                     <include name="testInvalidLogin"/>
+                    <include name="testSearchMusic"/>
                 </methods>
             </class>
 
