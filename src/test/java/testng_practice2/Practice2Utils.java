@@ -25,7 +25,7 @@ public class Practice2Utils {
 
                 email.add(faker.internet().emailAddress());
                 password.add(faker.internet().
-                        password(10, 20, true, false, true));
+                        password(11, 20, true, true, true));
 
                 Random random = new Random();
                 int monthIndex = random.nextInt(12); // 0 to 11 for Jan to Dec

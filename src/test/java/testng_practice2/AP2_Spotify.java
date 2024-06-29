@@ -40,8 +40,8 @@ public class AP2_Spotify {
             e.printStackTrace();
         }
         Practice2Utils.writeSignUpDataToFile("src/test/java/testng_practice2/signUpData.csv",
-                "src/test/java/testng_practice2/validLogin.csv", 1);
-        Practice2Utils.writeInvalidLoginDataToFile("src/test/java/testng_practice2/invalidLogin.csv", 1);
+                "src/test/java/testng_practice2/validLogin.csv", 3);
+        Practice2Utils.writeInvalidLoginDataToFile("src/test/java/testng_practice2/invalidLogin.csv", 3);
     }
 
     @AfterTest
@@ -145,11 +145,6 @@ public class AP2_Spotify {
         Thread.sleep(1000);
         driver.findElement(By.id("login-username")).sendKeys(email, Keys.TAB, password, Keys.ENTER);
         Thread.sleep(1000);
-        driver.findElement(By.xpath("//span[@data-testid='username-first-letter']")).click();
-        Assert.assertTrue(driver.getPageSource().contains("Log out"));
-        driver.findElement(By.xpath("//button[@data-testid='user-widget-dropdown-logout']")).click();
-        Thread.sleep(1000);
-        Assert.assertTrue(driver.getPageSource().contains("Log in"));
 
         driver.findElement(By.linkText("Search")).click();
         Thread.sleep(1000);
@@ -157,9 +152,9 @@ public class AP2_Spotify {
         driver.findElement(By.xpath("//input[@data-testid='search-input']")).sendKeys("Adele Hello", Keys.ENTER);
         Thread.sleep(3000);
         driver.findElement (By.linkText("Hello")).click();
-        Thread.sleep(3000);
-        driver.findElement(By.xpath("//button[@data-testid='control-button-playpause']")).click();
-        Thread.sleep(5000);
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//div[@data-testid='action-bar-row']//button[@data-testid='play-button']")).click();
+        Thread.sleep(15000);
         driver.findElement(By.xpath("//button[@data-testid='control-button-playpause']")).click();
         String actualSongName = driver.findElement(By.linkText("Hello")).getText();
         Thread.sleep(1000);
@@ -167,7 +162,40 @@ public class AP2_Spotify {
         String actualArtistName = driver.findElement(By.linkText("Adele")).getText();
         Thread.sleep(1000);
         Assert.assertEquals(actualArtistName, "Adele");
+        driver.findElement(By.xpath("//span[@data-testid='username-first-letter']")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//button[.='Log out']")).click();
+        Thread.sleep(1000);
+        Assert.assertTrue(driver.getPageSource().contains("Log in"));
+        Assert.assertTrue(driver.findElement(By.xpath("//button[@data-testid='login-button']")).isDisplayed());
     }
+
+    @Test(priority = 5, dataProvider = "getValidLogin")
+    public void testCancelAccounts(String email, String password) throws InterruptedException {
+
+        driver.findElement(By.cssSelector("button[data-testid='login-button']")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.id("login-username")).sendKeys(email, Keys.TAB, password, Keys.ENTER);
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath("//span[@data-testid='username-first-letter']")).click();
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath("//span[.='Account']")).click();
+        Thread.sleep(1000);
+
+        //new window - use java script to click
+        driver.findElement(By.xpath("//a[@href='/us/account/close/']")).click();
+
+        // new window
+        driver.findElement(By.xpath("//a[@href='/us/account/close/warning/']")).click();
+
+
+
+
+
+    }
+
 
 
 
